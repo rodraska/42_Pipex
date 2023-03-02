@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 15:10:32 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/02 13:35:54 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:56:12 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 
 char	**ft_split(char const *s, char c);
 char	*word(char const *str, int *ptr_i, char c);

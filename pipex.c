@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 15:14:02 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/02 13:27:08 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:04:18 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void    free_arr(char **arr)
 
 int get_path(int ac, char **av, char **env)
 {
+    int     outfd;
     int     i;
     char    *path;
     char    **paths;
@@ -92,6 +93,7 @@ int get_path(int ac, char **av, char **env)
     npths = string_counter(path, ':');
     ac = 0;
 
+    outfd = open("outfile", O_CREAT | O_TRUNC | O_RDWR, 0644);
     //printf("%s\n", path);
     i = 0;
     while (i < npths)
@@ -109,15 +111,57 @@ int get_path(int ac, char **av, char **env)
     //printf("%s\n", full_cmd);
     //printf("%s\n", cmd);
     
-    printf("start of execve call\n");
+    int fd[2];
+    if (pipe(fd) == -1)
+        return (1);
+    int pid1 = fork();
+    if (pid1 < 0)
+        return (2);
+    
+    //printf("ola\n");
+    //printf("gpath: %s\n", gpath);
+    if (pid1 == 0)
+    {
+        //child process 1 (first command)
+        //printf("gpath: %s\n", gpath);
+        close(fd[0]);
+        dup2(fd[1], STDOUT_FILENO);
+        //printf("start of execve call 1\n");
+        if (execve(gpath, args, env) == -1)
+            perror("could not execute execve 1\n");
+        printf("something went wrong 1\n");
+    }
+
+    int pid2 = fork();
+    if (pid2 < 0)
+        return (3);
+    
+    char *args2[] = {"grep", "rtt"};
+    if (pid2 == 0)
+    {
+        close(fd[1]);
+        dup2(fd[0], STDIN_FILENO);
+        dup2(outfd, STDOUT_FILENO);
+        close(fd[0]);
+        //printf("start of execve call 2\n");
+        if (execve("/usr/bin/grep", args2, env) == -1)
+            perror("could not execute execve 2\n");
+        printf("something went wrong 2\n");
+    }
+    close(fd[1]);
+    waitpid(pid1, NULL, 0);
+    waitpid(pid2, NULL, 0);
+    
+    /* printf("start of execve call\n");
     if (execve(gpath, args, env) == -1)
         perror("could not execute execve\n");
-    printf("something went wrong\n");
+    printf("something went wrong\n"); */
     return (0);
 }
 
 int main(int ac, char **av, char **env)
 {
     get_path(ac, av, env);
+    
     return (0);
 }
