@@ -6,22 +6,25 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 15:14:02 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/01 15:17:01 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:27:08 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char    *str_trim(char *src)
+char    *str_trim(char *src, int c)
 {
 	char    *dest;
     int     i;
     int     j;
 
-    i = ft_strlen(src) - 5;
+    j = 0;
+    while (src[j] != c)
+        j++;
+    j++;
+    i = ft_strlen(src) - j;
     dest = (char *)malloc(sizeof(char) * i);
     i = 0;
-    j = 5;
     while (src[i])
     {
         dest[i] = src[j];
@@ -56,39 +59,60 @@ char    *path_join(char *s1, char *s2)
     return (new);    
 }
 
+void    free_arr(char **arr)
+{
+    int i;
+
+    i = 0;
+    while (arr[i])
+    {
+        free(arr[i]);
+        i++;
+    }
+}
+
 int get_path(int ac, char **av, char **env)
 {
     int     i;
     char    *path;
     char    **paths;
+    char    *gpath;
     char    *full_cmd;
+    char    **args;
     char    *cmd;
     int     nargs;
     int     npths;
 
-    path = str_trim(env[24]);
+    path = str_trim(env[24], '=');
     paths = ft_split(path, ':');
     full_cmd = av[2];
-    cmd = ft_split(full_cmd, ' ')[0];
+    args = ft_split(full_cmd, ' ');
+    cmd = args[0];
     nargs = string_counter(full_cmd, ' ');
     npths = string_counter(path, ':');
+    ac = 0;
 
-    printf("%s\n", path);
+    //printf("%s\n", path);
     i = 0;
     while (i < npths)
     {
+        paths[i] = path_join(paths[i], cmd);
+        if (access(paths[i], F_OK) == 0)
+        {
+            gpath = paths[i];
+            //printf("gpath: %s\n", gpath);
+            break ;
+        }
         //printf("%s\n", paths[i]);
-        printf("%s\n", path_join(paths[i], cmd));
         i++;
     }
-    printf("%s\n", full_cmd);
-    printf("%s\n", cmd);
-    i = 1;
-    while (i < nargs)
-    {
-        printf("%s\n", ft_split(full_cmd, ' ')[i]);
-        i++;
-    }
+    //printf("%s\n", full_cmd);
+    //printf("%s\n", cmd);
+    
+    printf("start of execve call\n");
+    if (execve(gpath, args, env) == -1)
+        perror("could not execute execve\n");
+    printf("something went wrong\n");
     return (0);
 }
 
