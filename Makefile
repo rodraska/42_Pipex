@@ -6,7 +6,7 @@
 #    By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 11:35:19 by rreis-de          #+#    #+#              #
-#    Updated: 2023/03/02 13:18:38 by rreis-de         ###   ########.fr        #
+#    Updated: 2023/03/03 14:33:14 by rreis-de         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,9 @@ CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
 RM = rm -f
 
 SRCS = pipex.c \
-		ft_split.c
+		ft_split.c \
+		children.c \
+		utils.c
 
 OBJS = $(SRCS:.c=.o)
 
