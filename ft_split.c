@@ -6,20 +6,20 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 15:11:58 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/01 15:13:42 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:54:02 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
 int	string_counter(char const *str, char c)
@@ -101,5 +101,6 @@ char	**ft_split(char const *s, char c)
 		}
 		i++;
 	}
+	arr[w] = 0;
 	return (arr);
 }

@@ -6,7 +6,7 @@
 #    By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 11:35:19 by rreis-de          #+#    #+#              #
-#    Updated: 2023/03/03 14:33:14 by rreis-de         ###   ########.fr        #
+#    Updated: 2023/03/06 11:56:26 by rreis-de         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
 RM = rm -f
 
