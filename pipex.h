@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 15:10:32 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/06 11:55:03 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:20:58 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+
+typedef struct s_command
+{
+    char    **args;
+    char    *gpath;
+    int     fd_out;
+    int     fd_in;
+    struct s_command *next;
+}   t_command;
 
 char	**ft_split(char const *s, char c);
 char	*word(char const *str, int *ptr_i, char c);

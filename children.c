@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 14:30:19 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/06 11:48:19 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:36:15 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,18 @@ int	ft_children(char **av, char *path, char **paths, char **env)
 	int		fd[2];
 	char	*gpath1;
 	char	*gpath2;
-	int		pid1;
-	int		pid2;
 
 	gpath1 = get_gpath(paths, string_counter(path, ':'), av[2]);
 	gpath2 = get_gpath(paths, string_counter(path, ':'), av[3]);
 	if (pipe(fd) == -1)
-		return (4);
-	pid1 = ft_child1(av, fd, gpath1, env);
-	pid2 = ft_child2(av, fd, gpath2, env);
+		return (5);
+	ft_child1(av, fd, gpath1, env);
+	ft_child2(av, fd, gpath2, env);
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	while (waitpid(-1, NULL, WNOHANG))
+	{
+	}
 	free(gpath1);
 	free(gpath2);
 	return (0);
