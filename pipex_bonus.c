@@ -6,42 +6,76 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:42:45 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 11:14:56 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:40:01 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-/* void    ft_exec(t_command cmd, char **env)
+int ft_exec(t_child *child, char **env)
 {
-    dup2(cmd.fd_in, STDIN_FILENO);
-    dup2(cmd.fd_out, STDOUT_FILENO);
-    if (execve(gpath, ft_split(av[3], ' '), env) == -1)
-			perror("could not execute execve\n");   
-} */
+    int pid;
 
-int	ft_children(int ac, char **av, char **env)
+    pid = fork();
+    if (pid < 0)
+        return (2);
+    if (pid == 0)
+    {
+        close(child->fd[0]);
+        dup2(child->in_fd, STDIN_FILENO);
+        dup2(child->fd[1], STDOUT_FILENO);
+        close(child->fd[1]);
+        if (execve(child->gpath, child->args, env) == -1)
+            perror("could not execute execve\n");
+    }
+    if (child->next)
+        child->next->in_fd = dup(child->fd[0]);
+    close(child->fd[0]);
+    close(child->fd[1]);
+    return (pid);
+}
+
+int execute_children(int ac, char **av, char **env, t_child *children)
+{
+    children->in_fd = open(av[1], O_RDONLY, 0444);
+    while (children)
+    {
+        if (pipe(children->fd) == -1)
+            return (2);
+        if (children == child_last(children))
+            children->fd[1] = open(av[ac - 1], O_CREAT | O_TRUNC | O_RDWR, 0644);
+        ft_exec(children, env);
+        children = children->next;
+    }
+    while (waitpid(-1, NULL, WNOHANG));
+    return (0);
+}
+
+int make_children(int ac, char **av, char **env)
 {
     int i;
-    char    *path;
-    char    **paths;
+    char *path;
+    char **paths;
     t_child *children;
 
+    children = NULL;
     path = str_trim(get_path(env), '=');
     paths = ft_split(path, ':');
-    i = 0;
-    while (i < ac - 3)
+    i = 2;
+    while (i <= ac - 2)
     {
-        child_add_back(&children, get_gpath(paths, string_counter(path, ':'), \
-        av[i + 2]), ft_split(av[i + 2], ' '));
+        child_add_back(&children, get_gpath(paths, string_counter(path, ':'), av[i]), ft_split(av[i], ' '));
         i++;
     }
-    child_print(children);
-    return (0);   
+    execute_children(ac, av, env, children);
+    free(path);
+    ft_free(paths);
+    ft_free_children(children);
+    return (0);
 }
 
 int main(int ac, char **av, char **env)
 {
-    ft_children(ac, av, env);
+    make_children(ac, av, env);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 10:55:12 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 11:17:35 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/07 14:21:32 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_child   *child_last(t_child *children)
         last = children;
         children = children->next;
     }
-    return (children);
+    return (last);
 }
 
 void    child_add_back(t_child **children, char *gpath, char **args)
@@ -34,10 +34,11 @@ void    child_add_back(t_child **children, char *gpath, char **args)
     if (*children)
     {
         last = child_last(*children);
-        (*children)->next = new;
+        last->next = new;
     }
     else
         *children = new;
+    
 }
 
 t_child	*child_new(char *gpath, char **args)
@@ -59,15 +60,18 @@ void    child_print(t_child *children)
 
     while (children)
     {
-        i = 0;
         printf("gpath: %s\n", children->gpath);
         printf("args: ");
+        i = 0;
         while (children->args[i])
         {
             printf("%s ", children->args[i]);
             i++;
         }
         printf("\n");
+        printf("fd[0]: %d\n", children->fd[0]);
+        printf("fd[1]: %d\n", children->fd[1]);
+        printf("in_fd: %d\n", children->in_fd);
         children = children->next;
     }
 }

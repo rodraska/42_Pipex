@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 10:06:58 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 11:14:15 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:31:02 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ typedef struct s_child
 {
     char    **args;
     char    *gpath;
+    int     fd[2];
+    int     in_fd;
     struct s_child *next;
 }   t_child;
 
@@ -39,7 +41,10 @@ void	ft_free(char **arr);
 char	*get_path(char **env);
 char	*get_gpath(char **paths, int npths, char *full_cmd);
 
-int     ft_children(int ac, char **av, char **env);
+int     make_children(int ac, char **av, char **env);
+int     execute_children(int ac, char **av, char **env, t_child *children);
+int     add_fd(t_child *children, char **av);
+int     ft_exec(t_child *child, char **env);
 
 t_child	*child_new(char *gpath, char **args);
 void    child_add_back(t_child **children, char *gpath, char **args);
