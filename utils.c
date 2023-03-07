@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 14:32:41 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 16:41:12 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:46:51 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,4 @@ void	ft_free(char **arr)
 	}
 	free(arr);
 	return ;
-}
-
-void	ft_free_children(t_child *children)
-{
-	while (children)
-	{
-		free(children)
-	}
 }

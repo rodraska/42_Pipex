@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 10:06:58 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 16:31:02 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:46:06 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int		ft_strlen(char *str);
 char	*str_trim(char *src, int c);
 char	*path_join(char *s1, char *s2);
 void	ft_free(char **arr);
+void	ft_free_children(t_child **children);
 
 char	*get_path(char **env);
 char	*get_gpath(char **paths, int npths, char *full_cmd);

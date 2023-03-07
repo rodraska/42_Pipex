@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 10:55:12 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 14:21:32 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:47:35 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,19 @@ void    child_print(t_child *children)
         printf("in_fd: %d\n", children->in_fd);
         children = children->next;
     }
+}
+
+void	ft_free_children(t_child **children)
+{
+	t_child	*tmp;
+	
+	while (*children)
+	{
+		tmp = (*children)->next;
+		free((*children)->gpath);
+		ft_free((*children)->args);
+		free(*children);
+		(*children) = tmp;
+	}
+	(*children) = NULL;
 }

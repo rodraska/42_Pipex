@@ -6,7 +6,7 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:42:45 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 16:40:01 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:46:20 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int make_children(int ac, char **av, char **env)
     execute_children(ac, av, env, children);
     free(path);
     ft_free(paths);
-    ft_free_children(children);
+    ft_free_children(&children);
     return (0);
 }
 
