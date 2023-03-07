@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/01 15:14:02 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 10:39:03 by rreis-de         ###   ########.fr       */
+/*   Created: 2023/03/07 10:38:14 by rreis-de          #+#    #+#             */
+/*   Updated: 2023/03/07 10:38:42 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/* char	*get_path(char **env)
+char	*get_path(char **env)
 {
 	int	i;
 
@@ -52,28 +52,4 @@ char	*get_gpath(char **paths, int npths, char *full_cmd)
 	}
 	ft_free(args);
 	return (NULL);
-} */
-
-int	ft_geral(int ac, char **av, char **env)
-{
-	int		outfd;
-	int		infd;
-	char	*path;
-	char	**paths;
-
-	path = str_trim(get_path(env), '=');
-	paths = ft_split(path, ':');
-	ac = 0;
-	infd = open(av[1], O_RDONLY, 0444);
-	outfd = open(av[4], O_CREAT | O_TRUNC | O_RDWR, 0644);
-	ft_children(av, path, paths, env);
-	free(path);
-	ft_free(paths);
-	return (0);
-}
-
-int	main(int ac, char **av, char **env)
-{
-	ft_geral(ac, av, env);
-	return (0);
 }
