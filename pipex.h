@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/01 15:10:32 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 10:07:08 by rreis-de         ###   ########.fr       */
+/*   Created: 2023/03/07 10:06:58 by rreis-de          #+#    #+#             */
+/*   Updated: 2023/03/08 10:09:14 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,36 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 
-typedef struct s_command
+typedef struct s_child
 {
-    char    **args;
-    char    *gpath;
-    int     fd_out;
-    int     fd_in;
-    struct s_command *next;
-}   t_command;
+	char			**args;
+	char			*gpath;
+	int				fd[2];
+	int				in_fd;
+	struct s_child	*next;
+}	t_child;
 
 char	**ft_split(char const *s, char c);
 char	*word(char const *str, int *ptr_i, char c);
 int		string_counter(char const *str, char c);
 int		ft_strlen(char *str);
-void	ft_free(char **arr);
 
 char	*str_trim(char *src, int c);
 char	*path_join(char *s1, char *s2);
-int		ft_child(char **av, int *fd, char *gpath, char **env);
-int		ft_child2(char **av, int *fd, char *gpath, char **env);
-int		ft_children(char **av, char *path, char **paths, char **env);
+void	ft_free(char **arr);
+void	ft_free_children(t_child **children);
+
 char	*get_path(char **env);
 char	*get_gpath(char **paths, int npths, char *full_cmd);
-int		ft_geral(int ac, char **av, char **env);
+
+int		make_children(int ac, char **av, char **env);
+int		execute_children(int ac, char **av, char **env, t_child *children);
+int		add_fd(t_child *children, char **av);
+int		ft_exec(t_child *child, char **env);
+
+t_child	*child_new(char *gpath, char **args);
+void	child_add_back(t_child **children, char *gpath, char **args);
+t_child	*child_last(t_child *children);
+void	child_print(t_child *children);
 
 #endif

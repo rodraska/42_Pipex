@@ -6,39 +6,38 @@
 /*   By: rreis-de <rreis-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 10:55:12 by rreis-de          #+#    #+#             */
-/*   Updated: 2023/03/07 16:47:35 by rreis-de         ###   ########.fr       */
+/*   Updated: 2023/03/08 10:09:02 by rreis-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "pipex.h"
 
-t_child   *child_last(t_child *children)
+t_child	*child_last(t_child *children)
 {
-    t_child *last;
-    
-    last = children;
-    while (children != NULL)
-    {
-        last = children;
-        children = children->next;
-    }
-    return (last);
+	t_child	*last;
+
+	last = children;
+	while (children != NULL)
+	{
+		last = children;
+		children = children->next;
+	}
+	return (last);
 }
 
-void    child_add_back(t_child **children, char *gpath, char **args)
+void	child_add_back(t_child **children, char *gpath, char **args)
 {
-    t_child *new;
-    t_child *last;
+	t_child	*new;
+	t_child	*last;
 
-    new = child_new(gpath, args);
-    if (*children)
-    {
-        last = child_last(*children);
-        last->next = new;
-    }
-    else
-        *children = new;
-    
+	new = child_new(gpath, args);
+	if (*children)
+	{
+		last = child_last(*children);
+		last->next = new;
+	}
+	else
+		*children = new;
 }
 
 t_child	*child_new(char *gpath, char **args)
@@ -54,32 +53,32 @@ t_child	*child_new(char *gpath, char **args)
 	return (child);
 }
 
-void    child_print(t_child *children)
+void	child_print(t_child *children)
 {
-    int i;
+	int	i;
 
-    while (children)
-    {
-        printf("gpath: %s\n", children->gpath);
-        printf("args: ");
-        i = 0;
-        while (children->args[i])
-        {
-            printf("%s ", children->args[i]);
-            i++;
-        }
-        printf("\n");
-        printf("fd[0]: %d\n", children->fd[0]);
-        printf("fd[1]: %d\n", children->fd[1]);
-        printf("in_fd: %d\n", children->in_fd);
-        children = children->next;
-    }
+	while (children)
+	{
+		printf("gpath: %s\n", children->gpath);
+		printf("args: ");
+		i = 0;
+		while (children->args[i])
+		{
+			printf("%s ", children->args[i]);
+			i++;
+		}
+		printf("\n");
+		printf("fd[0]: %d\n", children->fd[0]);
+		printf("fd[1]: %d\n", children->fd[1]);
+		printf("in_fd: %d\n", children->in_fd);
+		children = children->next;
+	}
 }
 
 void	ft_free_children(t_child **children)
 {
 	t_child	*tmp;
-	
+
 	while (*children)
 	{
 		tmp = (*children)->next;
